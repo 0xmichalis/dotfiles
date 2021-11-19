@@ -2,14 +2,19 @@
 	email = kargakis@protonmail.com
 	name = Michalis Kargakis
 	signingkey = 1B2F98E9CC581893
+
 [core]
 	editor = vi
+
 [push]
 	default = simple
+
 [transfer]
 	fsckobjects = true
+
 [fetch]
 	fsckobjects = true
+
 [receive]
 	fsckObjects = true
 
@@ -17,20 +22,24 @@
 	ac = !git add . && git commit -S -am
 	l = log --pretty=format:"%C(yellow)%h\\ %C(reset)%s\\ %C(green)[%an]" --decorate --date=short
 	fp = fetch --prune
-	f = fetch upstream
 	b = branch
 	c = checkout
 	cb = checkout -b
 	gc = gc --prune=all
-	m = merge upstream/master
-	p = push origin
 	cln = clean -fd .
-	ff = "!sh -c \"git fetch upstream pull/$1/head; git checkout FETCH_HEAD\" -"
+	ff = "!sh -c \"git fetch $1 pull/$2/head; git checkout FETCH_HEAD\" -"
 	r = rebase --gpg-sign=kargakis@protonmail.com
 	revinit = update-ref -d HEAD
+
 [commit]
 	gpgSign = true
+
 [gpg]
 	program = gpg
+
 [color]
 	ui = auto
+
+# Ala git multitenancy; need to ensure ~/.ssh/config is properly configured, too.
+[includeIf "gitdir:~/docs/"]
+    path = ~/docs/.gitconfig
