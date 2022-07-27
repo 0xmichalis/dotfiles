@@ -6,6 +6,9 @@
 [core]
 	editor = vi
 
+[merge]
+	conflictstyle = diff3
+
 [push]
 	default = simple
 
