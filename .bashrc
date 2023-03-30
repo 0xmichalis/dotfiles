@@ -5,12 +5,20 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+###########
+# Aliases #
+###########
+
 alias ll='ls -Alh'
 alias kc='kubectl'
 alias dk='docker kill $(docker ps -q)'
 alias rmhist='cat /dev/null > ~/.bash_history && history -c && reset'
 alias rg='rg --hidden'
 alias now='date +%s'
+
+#############
+# Functions #
+#############
 
 function drm() {
 	if [[ -z "$1" ]]; then
@@ -27,5 +35,17 @@ function h2d() {
 	fi
 	echo "ibase=16; ${@^^}" | bc;
 }
+
+function d2h() {
+	if [[ -z "$1" ]]; then
+		echo "Usage: ${FUNCNAME[0]} [dec]";
+		return 2;
+	fi
+    echo "obase=16; ${@^^}" | bc;
+}
+
+###########
+# Exports #
+###########
 
 export PS1='\[\033[01;34m\]\W\[\033[00m\]\$ '
