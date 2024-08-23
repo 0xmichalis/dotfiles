@@ -11,6 +11,7 @@ fi
 
 alias ll='ls -Alh'
 alias kc='kubectl'
+alias docker='podman'
 alias dk='docker kill $(docker ps -q)'
 alias rmhist='cat /dev/null > ~/.bash_history && history -c && reset'
 alias rg='rg --hidden'
