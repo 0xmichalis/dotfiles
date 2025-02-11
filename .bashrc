@@ -14,7 +14,7 @@ alias kc='kubectl'
 alias docker='podman'
 alias dk='docker kill $(docker ps -q)'
 alias rmhist='cat /dev/null > ~/.bash_history && history -c && reset'
-alias rg='rg --hidden'
+alias rg='rg --hidden --no-ignore --text --glob "!.yarn/**" --glob "!**/node_modules/**" --glob "!.git/**"'
 alias now='date +%s'
 
 #############
