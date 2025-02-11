@@ -30,7 +30,7 @@
 	cb = checkout -b
 	gc = gc --prune=all
 	cln = clean -fd .
-	ff = "!sh -c \"git fetch $1 pull/$2/head; git checkout FETCH_HEAD\" -"
+	fpr = "!sh -c \"git fetch $1 pull/$2/head; git checkout FETCH_HEAD\" -"
 	r = rebase --gpg-sign=kargakis@protonmail.com
 	revinit = update-ref -d HEAD
 
