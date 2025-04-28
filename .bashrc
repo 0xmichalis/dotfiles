@@ -46,6 +46,16 @@ function d2h() {
     echo "obase=16; ${@^^}" | bc;
 }
 
+function pdfreduce() {
+	if [[ -z "$1" || -z "$2" ]]; then
+		echo "Usage: ${FUNCNAME[0]} [input.pdf] [output.pdf]";
+		return 2;
+	fi
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 \
+		-dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH \
+		-sOutputFile="$2" "$1"
+}
+
 ###########
 # Exports #
 ###########
