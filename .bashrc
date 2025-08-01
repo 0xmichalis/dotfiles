@@ -22,6 +22,14 @@ alias sys='w && free -hm && df -h'
 # Functions #
 #############
 
+function runhttp() {
+    if [[ -z "$1" ]]; then
+        echo "Usage: ${FUNCNAME[0]} [port]";
+        return 2;
+    fi
+    python3 -m http.server "$1"
+}
+
 function drm() {
 	if [[ -z "$1" ]]; then
 		echo "Usage: ${FUNCNAME[0]} [image_regexp]";
