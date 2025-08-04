@@ -29,6 +29,8 @@
 	b = branch
 	c = checkout
 	cb = checkout -b
+	p = push
+	po = push origin
 	gc = gc --prune=all
 	cln = clean -fd .
 	fpr = "!sh -c \"git fetch $1 pull/$2/head; git checkout FETCH_HEAD\" -"
