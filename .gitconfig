@@ -24,7 +24,11 @@
 [alias]
 	ac = !git add . && git commit -S -am
 	acn = !git add . && git commit --no-verify -S -am
+	cn = commit --no-verify -S -am
 	l = log --pretty=format:"%C(yellow)%h\\ %C(reset)%s\\ %C(green)[%an]" --decorate --date=short
+	f = fetch
+	fo = fetch origin
+	fu = fetch upstream
 	fp = fetch --prune
 	b = branch
 	c = checkout
