@@ -64,6 +64,24 @@ function pdfreduce() {
 		-sOutputFile="$2" "$1"
 }
 
+function screenrecord() {
+	if [[ -z "$1" ]]; then
+		echo "Usage: ${FUNCNAME[0]} [duration_in_seconds] [output_filename]";
+		echo "Example: ${FUNCNAME[0]} 25 output.mkv";
+		return 2;
+	fi
+
+	local duration="$1"
+	local output="${2:-output.mkv}"
+
+	# check audio output with:
+	#   pactl list sources | grep -A 5 "Name:"
+	ffmpeg -video_size 1920x1080 -framerate 24 -thread_queue_size 2048 \
+		-draw_mouse 0 -f x11grab -i :1+1920,0 \
+		-thread_queue_size 2048 -f pulse -i bluez_output.AC_80_0A_75_AC_B8.1.monitor \
+		-t "$duration" -c:v libx264 -preset ultrafast -crf 0 -c:a flac "$output"
+}
+
 ###########
 # Exports #
 ###########
