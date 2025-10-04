@@ -82,6 +82,22 @@ function screenrecord() {
 		-t "$duration" -c:v libx264 -preset ultrafast -crf 0 -c:a flac "$output"
 }
 
+function ffmpeg_trim() {
+	if [[ -z "$1" ]]; then
+		echo "Usage: ${FUNCNAME[0]} [start_time] [input_file] [output_file]";
+		echo "Example: ${FUNCNAME[0]} 5 output.mkv final.mkv";
+		echo "Example: ${FUNCNAME[0]} 00:01:30 video.mp4 trimmed.mp4";
+		echo "Example: ${FUNCNAME[0]} 10  # uses output.mkv as input, final.mkv as output";
+		return 2;
+	fi
+
+	local start_time="$1"
+	local input="${2:-output.mkv}"
+	local output="${3:-final.mkv}"
+
+	ffmpeg -i "$input" -ss "$start_time" -c:v libx264 -crf 0 -c:a copy "$output"
+}
+
 ###########
 # Exports #
 ###########
