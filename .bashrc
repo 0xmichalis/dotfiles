@@ -43,7 +43,11 @@ function h2d() {
 		echo "Usage: ${FUNCNAME[0]} [hex]";
 		return 2;
 	fi
-	echo "ibase=16; ${@^^}" | bc;
+	local hex="$1"
+	# Strip optional 0x/0X prefix before converting
+	hex="${hex#0x}"
+	hex="${hex#0X}"
+	echo "ibase=16; ${hex^^}" | bc;
 }
 
 function d2h() {
