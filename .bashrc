@@ -102,6 +102,43 @@ function ffmpeg_trim() {
 	ffmpeg -i "$input" -ss "$start_time" -c:v libx264 -crf 0 -c:a copy "$output"
 }
 
+function convert_heic() {
+    local count=0 failed=0
+    
+    if [[ $# -gt 0 && "$1" == "-h" ]]; then
+        echo "Usage: convert_heic [directory]"
+        echo "Converts all HEIC files in current directory (or specified directory) to JPG"
+        return 0
+    fi
+    
+    local target_dir="${1:-.}"
+    
+    if [[ ! -d "$target_dir" ]]; then
+        echo "Error: Directory '$target_dir' not found"
+        return 1
+    fi
+    
+    for heic_file in "$target_dir"/*.HEIC "$target_dir"/*.heic; do
+        [[ -e "$heic_file" ]] || continue
+        
+        filename="${heic_file%.*}"
+        output_file="${filename}.jpg"
+        
+        echo "Converting: $(basename "$heic_file") → $(basename "$output_file")"
+        
+        if heif-convert -d libde265 "$heic_file" "$output_file"; then
+            echo "  ✓ Success"
+            ((count++))
+        else
+            echo "  ✗ Failed"
+            ((failed++))
+        fi
+    done
+    
+    echo ""
+    echo "Conversion complete: $count successful, $failed failed"
+}
+
 ###########
 # Exports #
 ###########
