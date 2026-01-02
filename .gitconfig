@@ -5,18 +5,48 @@
 
 [core]
 	editor = vi
+	excludesfile = ~/.gitignore
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[init]
+    defaultBranch = main
+
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+
+[pull]
+    rebase = true
+
+[rebase]
+	gpgSign = true
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+
+[help]
+    autocorrect = prompt
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [push]
 	default = simple
+	autoSetupRemote = true
 
 [transfer]
 	fsckobjects = true
 
 [fetch]
 	fsckobjects = true
+	prune = true
 
 [receive]
 	fsckObjects = true
@@ -29,7 +59,6 @@
 	f = fetch
 	fo = fetch origin
 	fu = fetch upstream
-	fp = fetch --prune
 	b = branch
 	c = checkout
 	cb = checkout -b
@@ -38,18 +67,16 @@
 	gc = gc --prune=all
 	cln = clean -fd .
 	fpr = "!sh -c \"git fetch $1 pull/$2/head; git checkout FETCH_HEAD\" -"
-	r = rebase --gpg-sign=kargakis@protonmail.com
+	r = rebase
 	revinit = update-ref -d HEAD
+	st = status -s
 
 [commit]
 	gpgSign = true
+	verbose = true
 
 [gpg]
 	program = gpg
 
 [color]
 	ui = auto
-
-# Ala git multitenancy; need to ensure ~/.ssh/config is properly configured, too.
-[includeIf "gitdir:~/docs/"]
-    path = ~/docs/.gitconfig
