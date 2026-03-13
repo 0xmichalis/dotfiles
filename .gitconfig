@@ -9,6 +9,8 @@
 
 [branch]
     sort = -committerdate
+    autoSetupMerge = always
+    autoSetupRebase = always
 
 [tag]
     sort = version:refname
