@@ -78,12 +78,14 @@ function screenrecord() {
 	local duration="$1"
 	local output="${2:-output.mp4}"
 
-	# check audio output with:
-	#   pactl list sources | grep -A 5 "Name:"
 	ffmpeg -video_size 1920x1080 -framerate 24 -thread_queue_size 2048 \
 		-draw_mouse 0 -f x11grab -i :1+1920,0 \
 		-thread_queue_size 2048 -f pulse -i bluez_output.AC_80_0A_75_AC_B8.1.monitor \
-		-t "$duration" -c:v libx264 -preset ultrafast -crf 0 -c:a aac "$output"
+		-t "$duration" \
+		-c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p \
+		-c:a aac -b:a 128k \
+		-movflags +faststart \
+		"$output"
 }
 
 function ffmpeg_trim() {
