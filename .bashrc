@@ -17,6 +17,7 @@ alias rmhist='cat /dev/null > ~/.bash_history && history -c && reset'
 alias rg='rg --hidden --text --glob "!.yarn/**" --glob "!**/node_modules/**" --glob "!.git/**"'
 alias now='date +%s'
 alias sys='w && free -hm && df -h'
+alias sandbox='firejail --private firefox'
 
 #############
 # Functions #
