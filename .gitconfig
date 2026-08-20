@@ -71,6 +71,9 @@
 	r = rebase
 	revinit = update-ref -d HEAD
 	st = status -s
+	wt = worktree
+	wtrm = worktree remove
+	wtls = worktree list
 
 [commit]
 	gpgSign = true
