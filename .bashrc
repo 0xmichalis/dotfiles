@@ -148,17 +148,28 @@ function convert_heic() {
 
 export PS1='\[\033[01;34m\]\W\[\033[00m\]\$ '
 
-# Orca: new terminal tabs open as shell (left) | claude (right).
+# Orca: tabs open as shell (left) | claude (right).
 # Only the active, single-pane tab splits, so agent-spawned background terminals
 # and the split pane itself are skipped.
-__orca_autosplit() {
+__orca_active_single_pane() {
     orca terminal list --worktree "id:$ORCA_WORKTREE_ID" --include-visual-layouts --json 2>/dev/null |
         jq -e --arg tab "$ORCA_TAB_ID" '[.result.visualLayouts[].root | .. | objects
             | select(.type? == "group" and .activeTabId == $tab) | .tabs[]
-            | select(.tabId == $tab) | .panes.type] == ["terminal"]' >/dev/null || return
-    orca terminal split --terminal "$ORCA_TERMINAL_HANDLE" --direction vertical \
-        --command "claude --dangerously-skip-permissions" >/dev/null 2>&1
+            | select(.tabId == $tab) | .panes.type] == ["terminal"]' >/dev/null
 }
-if [[ $TERM_PROGRAM == Orca && -n $ORCA_TAB_ID && -n $ORCA_WORKTREE_ID && -z $ORCA_AGENT_LAUNCH ]]; then
-    (__orca_autosplit &)
+__orca_split_right() {
+    orca terminal split --terminal "$ORCA_TERMINAL_HANDLE" --direction vertical --command "$1" >/dev/null 2>&1
+}
+if [[ $TERM_PROGRAM == Orca && -n $ORCA_TAB_ID && -n $ORCA_WORKTREE_ID ]]; then
+    if [[ -z $ORCA_AGENT_LAUNCH ]]; then
+        (__orca_active_single_pane && __orca_split_right "claude --dangerously-skip-permissions" &)
+    else
+        # Agent tabs (new agent, resume): Orca types `claude ...` into this shell, so
+        # intercept the first call and run it in a right pane instead.
+        claude() {
+            unset -f claude
+            __orca_active_single_pane || { command claude "$@"; return; }
+            __orca_split_right "claude ${*@Q}"
+        }
+    fi
 fi
